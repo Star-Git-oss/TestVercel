@@ -8,20 +8,7 @@ const mongoose = require("mongoose");
 
 app.use(cors("*"));
 
-app.get("/", (req, res) => {
-  res.json("Kmong");
-  const MONGODB_URI =
-    "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
-
-  const connectDB = mongoose
-    .connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(() => res.status(200).json("Welcome, your app is working well"))
-    .catch((err) => res.status(200).json("Error"));
-  
-});
+connectDB()
 // Init Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,12 +20,11 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 // if (process.env.NODE_ENV === "production") {
 // Set static folder
-// app.use(express.static("build"));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// });
-// }
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../BAZAR_CAR_frontend/dist", "index.html"));
+});
+
 
 const PORT = process.env.PORT || 5005;
 

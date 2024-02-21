@@ -44,6 +44,9 @@ router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) 
     payMethod,
     vehicleInfo,
   } = req.body;
+  const fileext = req.files[0].filename.slice(req.files[0].filename.indexOf('.'));
+  let uploads = req.uniqueSuffix + fileext;
+  console.log(uploads);
   try {
     let vehicle = new Vehicle({
       id,
@@ -56,7 +59,7 @@ router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) 
       price,
       payMethod,
       vehicleInfo,
-      uploads: req.uniqueSuffix,
+      uploads,
     });
 
     await vehicle.save();
@@ -69,8 +72,7 @@ router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) 
 
 router.post("/open", async (req, res) => {
   try {
-    // const last12Documents = await Vehicle.find();
-    const last12Documents = await Vehicle.find().sort({_id: -1}).limit(12);
+    const last12Documents = await Vehicle.find().sort({_id: -1}).limit(req.body.num);
     res.status(200).send(last12Documents);
   } catch (err) {
     console.error(err.message);
