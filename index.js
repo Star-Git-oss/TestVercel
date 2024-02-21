@@ -1,7 +1,7 @@
 const express = require("express");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 // const path = require("path");
-// const cors = require("cors");
+const cors = require("cors");
 
 const app = express();
 // const corsOptions = {
@@ -11,7 +11,7 @@ const app = express();
 // };
 
 // Connect Database
-// connectDB();
+connectDB();
 
 // const corsOptions = {
 //   origin: "*",
@@ -19,7 +19,7 @@ const app = express();
 //   credentials: true,
 //   optionsSuccessStatus: 200,
 // };
-// app.use(cors("*"));
+app.use(cors("*"));
 
 app.get('/', (req, res) => {
   res.status(200).json('Welcome, your app is working well');
