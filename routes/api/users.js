@@ -77,7 +77,7 @@ router.post("/signin", async (req, res) => {
       );
     }
   } catch (err) {
-    res.status(400).send("Server error");
+    res.status(400).send("Server confused");
   }
 });
 
