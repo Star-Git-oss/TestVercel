@@ -11,7 +11,7 @@ const app = express();
 // };
 
 // Connect Database
-// connectDB();
+connectDB();
 
 // const corsOptions = {
 //   origin: "*",
@@ -25,11 +25,11 @@ app.get('/', (req, res) => {
   res.status(200).json('Welcome, your app is working well');
 })
 // Init Middleware
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// Define Routes
-// app.use("/api/user", require("./routes/api/users"));
-// app.use("/api/vehicle", require("./routes/api/vehicle"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// Def/ine Routes
+app.use("/api/user", require("./routes/api/users"));
+app.use("/api/vehicle", require("./routes/api/vehicle"));
 
 // app.use('/', express.static(path.join(__dirname, 'build')));
 
@@ -44,6 +44,6 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5005;
 
-app.listen(5000, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
