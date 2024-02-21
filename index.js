@@ -1,12 +1,9 @@
 const express = require("express");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 const path = require("path");
 const cors = require("cors");
 
 const app = express();
-
-const MONGODB_URI =
-  "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
 const mongoose = require("mongoose");
 
 // require("./config/db");
@@ -26,14 +23,19 @@ const mongoose = require("mongoose");
 // };
 app.use(cors("*"));
 
-mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => res.status(200).json('Welcome, your app is working well'))
-  .catch((err) => res.status(500).json('error'));
+app.get("/", (req, res) => {
+  const MONGODB_URI =
+    "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
 
+  const connectDB = mongoose
+    .connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => res.status(200).json("Welcome, your app is working well"))
+    .catch((err) => res.status(200).json("Error"));
+  
+});
 // Init Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
