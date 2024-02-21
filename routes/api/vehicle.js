@@ -84,13 +84,13 @@ router.post("/groupOpen", async (req, res) => {
   let str = req.body.str;
   let newSrc = [];
   newSrc.push(str);
-  console.log("str.slice(30, -4)", str.slice(30, -4));
+  console.log("str.slice(30, -4)", str.slice(52, -4));
   fs.readdir("public/uploads", (err, files) => {
     if (err) {
         console.error(err);
         res.status(500).send('Error reading images directory');
     } else {
-        const imageNames = files.filter(file => file.includes(str.slice(30, -4))); // Filtrar solo archivos con extensión .jpg
+        const imageNames = files.filter(file => file.includes(str.slice(52, -4))); // Filtrar solo archivos con extensión .jpg
         res.status(200).send(imageNames);
     }
   });
