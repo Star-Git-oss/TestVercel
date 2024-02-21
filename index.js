@@ -1,6 +1,6 @@
 const express = require("express");
 // const connectDB = require("./config/db");
-// const path = require("path");
+const path = require("path");
 const cors = require("cors");
 
 const app = express();
@@ -12,7 +12,6 @@ require("./config/db");
 // };
 
 // Connect Database
-// connectDB;
 
 // const corsOptions = {
 //   origin: "*",
@@ -26,11 +25,11 @@ app.get('/', (req, res) => {
   res.status(200).json('Welcome, your app is working well');
 })
 // Init Middleware
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 // Define Routes
-// app.use("/api/user", require("./routes/api/users"));
-// app.use("/api/vehicle", require("./routes/api/vehicle"));
+app.use("/api/user", require("./routes/api/users"));
+app.use("/api/vehicle", require("./routes/api/vehicle"));
 
 // app.use('/', express.static(path.join(__dirname, 'build')));
 
