@@ -35,6 +35,14 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Max-Age", "1800");
+  res.setHeader("Access-Control-Allow-Headers", "content-type");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+  );
   const { email, password } = req.body;
   try {
     let user = await User.findOne({ email });
@@ -67,20 +75,9 @@ router.post("/signin", async (req, res) => {
           }
         );
       }
-    }
-    else {
+    } else {
       res.status(500).send("User not exist");
     }
-    // return
-    // console.log(user.username, user.password, auth);
-    // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    // res.setHeader("Access-Control-Allow-Credentials", "true");
-    // res.setHeader("Access-Control-Max-Age", "1800");
-    // res.setHeader("Access-Control-Allow-Headers", "content-type");
-    // res.setHeader(
-    //   "Access-Control-Allow-Methods",
-    //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-    // );
   } catch (err) {
     res.status(400).send("Server confused");
   }
