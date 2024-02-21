@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/user", require("./routes/api/users"));
 app.use("/api/vehicle", require("./routes/api/vehicle"));
 
-// app.use('/', express.static(path.join(__dirname, 'build')));
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 // if (process.env.NODE_ENV === "production") {
 // Set static folder

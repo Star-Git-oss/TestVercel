@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const fs = require('fs');
 const path = require('path');
 const router = express.Router();
 const Vehicle = require("../../models/Vehicle");
@@ -64,6 +65,33 @@ router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) 
     console.error(err.message);
     res.status(500).send("Server error");
   }
+});
+
+router.post("/open", async (req, res) => {
+  try {
+    // const last12Documents = await Vehicle.find();
+    const last12Documents = await Vehicle.find().sort({_id: -1}).limit(12);
+    res.status(200).send(last12Documents);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.post("/groupOpen", async (req, res) => {
+  let str = req.body.str;
+  let newSrc = [];
+  newSrc.push(str);
+  console.log("str.slice(30, -4)", str.slice(30, -4));
+  fs.readdir("public/uploads", (err, files) => {
+    if (err) {
+        console.error(err);
+        res.status(500).send('Error reading images directory');
+    } else {
+        const imageNames = files.filter(file => file.includes(str.slice(30, -4))); // Filtrar solo archivos con extensión .jpg
+        res.status(200).send(imageNames);
+    }
+  });
 });
 
 module.exports = router;
