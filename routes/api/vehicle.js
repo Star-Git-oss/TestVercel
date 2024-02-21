@@ -1,26 +1,36 @@
 const express = require("express");
 const multer = require("multer");
+const path = require('path');
 const router = express.Router();
 const Vehicle = require("../../models/Vehicle");
 
+const setCustomSuffix = (req, res, next) => {
+  req.uniqueSuffix = Date.now() + Math.round(Math.random() * 1e9);
+  next();
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      // Specify the directory where uploaded files will be stored
-      cb(null, 'public/uploads/');
+    // Specify the directory where uploaded files will be stored
+    cb(null, "public/uploads/");
   },
   filename: async function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      const originalExtension = file.originalname.split('.').pop();
-      const newFileName = file.fieldname + '-' + uniqueSuffix + '.' + originalExtension;
-      cb(null, newFileName);
-  }
+    const uniqueSuffix = req.uniqueSuffix;
+    const ext = path.extname(file.originalname);
+    const index = req.files ? req.files.length + 1 : 1;
+    cb(null, `${ index === 2 ? uniqueSuffix+ext : uniqueSuffix + "-" + (index-2) + ext}`);
+  },
+  // uniqueSuffix: async function (req, file, cb) {
+  //   req.suffix = req.uniqueSuffix;
+  //   next();
+  // }
 });
 
 const upload = multer({
-  storage: storage
+  storage: storage,
 });
 
-router.post("/upload", upload.array('files'), async (req, res) => {
+router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) => {
   const {
     id,
     brand,
@@ -31,18 +41,9 @@ router.post("/upload", upload.array('files'), async (req, res) => {
     whatsApp,
     price,
     payMethod,
-    vehicleInfo
+    vehicleInfo,
   } = req.body;
   try {
-
-    const files = req.files;
-    const uploads = [];
-    for(let i = 0; i < files.length; i++){
-      uploads.push(files[i].filename);
-    }
-
-    console.log(uploads);
-
     let vehicle = new Vehicle({
       id,
       brand,
@@ -54,7 +55,7 @@ router.post("/upload", upload.array('files'), async (req, res) => {
       price,
       payMethod,
       vehicleInfo,
-      uploads
+      uploads: req.uniqueSuffix,
     });
 
     await vehicle.save();
@@ -64,6 +65,5 @@ router.post("/upload", upload.array('files'), async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 
 module.exports = router;

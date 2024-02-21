@@ -6,21 +6,6 @@ const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 
-// require("./config/db");
-// const corsOptions = {
-//   origin: 'http://localhost:8002',
-//   credentials: true, //access-control-allow-credentials:true
-//   optionSuccessStatus: 200,
-// };
-
-// Connect Database
-
-// const corsOptions = {
-//   origin: "*",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 200,
-// };
 app.use(cors("*"));
 
 app.get("/", (req, res) => {

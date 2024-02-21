@@ -35,7 +35,7 @@ const UserSchema = new Schema(
       type: String,
     },
     uploads: {
-      type: Array,
+      type: String,
     }
   },
   { timestamps: true }
