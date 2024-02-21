@@ -38,7 +38,7 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   console.log("req.body", req.body);
   try {
-    let user = await User.findOne({ email: email });
+    // let user = await User.findOne({ email: email });
     const auth = await bcrypt.compare(password, user.password);
     // return 
     // console.log(user.username, user.password, auth);
@@ -50,32 +50,33 @@ router.post("/signin", async (req, res) => {
     //   "Access-Control-Allow-Methods",
     //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
     // );
-    if (!auth) {
-      res.status(400).send("Auth error");
-    } else {
-      const payload = {
-        id: user._id,
-        role: user.role,
-      };
+      if (!auth) {
+        res.status(400).send("Auth error");
+      } 
+      else {
+        const payload = {
+          id: user._id,
+          role: user.role,
+        };
 
-      // Create jwt token and return it
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 3600 },
-        (err, token) => {
-          if (err) throw err;
-          res.status(200).json({
-            token,
-            id: user._id,
-            email: user.email,
-            username: user.username,
-            whatsApp: user.whatsApp,
-            tel: user.tel,
-          });
-        }
-      );
-    }
+        // Create jwt token and return it
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 3600 },
+          (err, token) => {
+            if (err) throw err;
+            res.status(200).json({
+              token,
+              id: user._id,
+              email: user.email,
+              username: user.username,
+              whatsApp: user.whatsApp,
+              tel: user.tel,
+            });
+          }
+        );
+      }
   } catch (err) {
     res.status(400).send("Server confused");
   }
