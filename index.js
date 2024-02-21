@@ -1,9 +1,10 @@
 const express = require("express");
-const connectDB = require("./config/db");
+// const connectDB = require("./config/db");
 // const path = require("path");
 const cors = require("cors");
 
 const app = express();
+require("./config/db");
 // const corsOptions = {
 //   origin: 'http://localhost:8002',
 //   credentials: true, //access-control-allow-credentials:true
@@ -11,7 +12,7 @@ const app = express();
 // };
 
 // Connect Database
-connectDB();
+// connectDB;
 
 // const corsOptions = {
 //   origin: "*",
