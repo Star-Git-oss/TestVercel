@@ -20,12 +20,15 @@
 // module.exports = connectDB;
 
 const mongoose = require("mongoose");
-const MONGODB_URI = "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
+const MONGODB_URI =
+  "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
 
-mongoose
-    .connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log("Mongodb Connected..."))
-    .catch((err) => console.error(err));
+const connectDB = mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Mongodb Connected..."))
+  .catch((err) => console.error(err));
+
+module.exports = connectDB;

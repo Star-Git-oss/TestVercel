@@ -1,10 +1,15 @@
 const express = require("express");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 const path = require("path");
 const cors = require("cors");
 
 const app = express();
-require("./config/db");
+
+const MONGODB_URI =
+  "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
+const mongoose = require("mongoose");
+
+// require("./config/db");
 // const corsOptions = {
 //   origin: 'http://localhost:8002',
 //   credentials: true, //access-control-allow-credentials:true
@@ -22,7 +27,15 @@ require("./config/db");
 app.use(cors("*"));
 
 app.get('/', (req, res) => {
-  res.status(200).json('Welcome, your app is working well');
+
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => res.status(200).json('Welcome, your app is working well'))
+  .catch((err) => res.status(500).json('error'));
+  // res.status(200).json('Welcome, your app is working well');
 })
 // Init Middleware
 app.use(express.json());
