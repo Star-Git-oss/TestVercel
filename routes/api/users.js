@@ -35,9 +35,9 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
-  res.send(200).json(req.body);
-  // const { email, password } = req.body;
-  // console.log("req.body", req.body);
+  const { email, password } = req.body;
+  console.log("req.body", req.body);
+  res.send(req.body);
   // try {
   //   let user = await User.findOne({ email });
   //   if (user) {
