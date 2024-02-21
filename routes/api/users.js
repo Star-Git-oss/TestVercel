@@ -8,30 +8,31 @@ const axios = require("axios");
 
 router.post("/signup", async (req, res) => {
   const { email, username, whatsApp, tel, password } = req.body;
-  try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ errors: { msg: "User already exists" } });
-    }
+  res.status(200).send("success");
+  // try {
+  //   let user = await User.findOne({ email });
+  //   if (user) {
+  //     return res.status(400).json({ errors: { msg: "User already exists" } });
+  //   }
 
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+  //   const salt = await bcrypt.genSalt(10);
+  //   const passwordHash = await bcrypt.hash(password, salt);
 
-    user = new User({
-      email,
-      username,
-      whatsApp,
-      tel,
-      password: passwordHash,
-    });
+  //   user = new User({
+  //     email,
+  //     username,
+  //     whatsApp,
+  //     tel,
+  //     password: passwordHash,
+  //   });
 
-    await user.save();
+  //   await user.save();
 
-    res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
+  //   res.json(user);
+  // } catch (err) {
+  //   console.error(err.message);
+  //   res.status(500).send("Server error");
+  // }
 });
 
 router.post("/signin", async (req, res) => {
