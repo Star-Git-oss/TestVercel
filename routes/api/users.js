@@ -38,37 +38,39 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   console.log("req.body", req.body);
   try {
-    let user = await User.findOne({ email })
-      .then((res) => res.status(500).send("success"))
-      .catch((err) => res.status(500).send("No user exist"));
-    // const auth = bcrypt.compare(password, user.password);
-    // if (!auth) {
-    //   res.status(400).send("Auth error");
-    // } else {
-    //   const payload = {
-    //     id: user._id,
-    //     role: user.role,
-    //   };
+    let user = await User.findOne({ email });
+    if (user) {
+      const auth = bcrypt.compare(password, user.password);
+      if (!auth) {
+        res.status(400).send("Auth error");
+      } else {
+        const payload = {
+          id: user._id,
+          role: user.role,
+        };
 
-    //   // Create jwt token and return it
-    //   jwt.sign(
-    //     payload,
-    //     config.get("jwtSecret"),
-    //     { expiresIn: 3600 },
-    //     (err, token) => {
-    //       if (err) throw err;
-    //       res.status(200).json({
-    //         token,
-    //         id: user._id,
-    //         email: user.email,
-    //         username: user.username,
-    //         whatsApp: user.whatsApp,
-    //         tel: user.tel,
-    //       });
-    //     }
-    //   );
-    // }
-
+        // Create jwt token and return it
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 3600 },
+          (err, token) => {
+            if (err) throw err;
+            res.status(200).json({
+              token,
+              id: user._id,
+              email: user.email,
+              username: user.username,
+              whatsApp: user.whatsApp,
+              tel: user.tel,
+            });
+          }
+        );
+      }
+    }
+    else {
+      res.status(500).send("User not exist");
+    }
     // return
     // console.log(user.username, user.password, auth);
     // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
