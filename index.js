@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 // Define Routes
-app.use("/api/user", require("./routes/api/users"));
-app.use("/api/vehicle", require("./routes/api/vehicle"));
+// app.use("/api/user", require("./routes/api/users"));
+// app.use("/api/vehicle", require("./routes/api/vehicle"));
 
 // app.use('/', express.static(path.join(__dirname, 'build')));
 
