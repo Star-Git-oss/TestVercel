@@ -24,6 +24,7 @@ const mongoose = require("mongoose");
 app.use(cors("*"));
 
 app.get("/", (req, res) => {
+  res.json("Kmong");
   const MONGODB_URI =
     "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/";
 
@@ -56,6 +57,6 @@ app.use("/api/vehicle", require("./routes/api/vehicle"));
 
 const PORT = process.env.PORT || 5005;
 
-app.listen(5000, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
