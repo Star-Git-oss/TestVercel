@@ -1,5 +1,5 @@
 const express = require("express");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 // const path = require("path");
 const cors = require("cors");
 
@@ -11,7 +11,7 @@ const app = express();
 // };
 
 // Connect Database
-// connectDB();
+connectDB();
 
 // const corsOptions = {
 //   origin: "*",
