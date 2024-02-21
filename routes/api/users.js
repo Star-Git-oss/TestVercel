@@ -40,17 +40,18 @@ router.post("/signin", async (req, res) => {
   try {
     let user = await User.findOne({ email: email });
     const auth = await bcrypt.compare(password, user.password);
-    console.log(user.username, user.password, auth);
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-    );
+    // return 
+    // console.log(user.username, user.password, auth);
+    // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    // res.setHeader("Access-Control-Allow-Credentials", "true");
+    // res.setHeader("Access-Control-Max-Age", "1800");
+    // res.setHeader("Access-Control-Allow-Headers", "content-type");
+    // res.setHeader(
+    //   "Access-Control-Allow-Methods",
+    //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    // );
     if (!auth) {
-      res.status(400).send("Server error");
+      res.status(400).send("Auth error");
     } else {
       const payload = {
         id: user._id,
