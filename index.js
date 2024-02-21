@@ -1,5 +1,5 @@
 const express = require("express");
-const connectDB = require("./config/db");
+// const connectDB = require("./config/db");
 const path = require("path");
 const cors = require("cors");
 
@@ -26,8 +26,6 @@ const mongoose = require("mongoose");
 // };
 app.use(cors("*"));
 
-app.get('/', (req, res) => {
-
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -35,8 +33,7 @@ mongoose
   })
   .then(() => res.status(200).json('Welcome, your app is working well'))
   .catch((err) => res.status(500).json('error'));
-  // res.status(200).json('Welcome, your app is working well');
-})
+
 // Init Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
