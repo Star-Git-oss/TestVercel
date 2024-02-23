@@ -1,14 +1,14 @@
 const express = require("express");
 const multer = require("multer");
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 const router = express.Router();
 const Vehicle = require("../../models/Vehicle");
 
 const setCustomSuffix = (req, res, next) => {
   req.uniqueSuffix = Date.now() + Math.round(Math.random() * 1e9);
   next();
-}
+};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -19,7 +19,14 @@ const storage = multer.diskStorage({
     const uniqueSuffix = req.uniqueSuffix;
     const ext = path.extname(file.originalname);
     const index = req.files ? req.files.length + 1 : 1;
-    cb(null, `${ index === 2 ? uniqueSuffix+ext : uniqueSuffix + "-" + (index-2) + ext}`);
+    cb(
+      null,
+      `${
+        index === 2
+          ? uniqueSuffix + ext
+          : uniqueSuffix + "-" + (index - 2) + ext
+      }`
+    );
   },
   // uniqueSuffix: async function (req, file, cb) {
   //   req.suffix = req.uniqueSuffix;
@@ -31,24 +38,12 @@ const upload = multer({
   storage: storage,
 });
 
-router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) => {
-  const {
-    id,
-    brand,
-    year,
-    version,
-    mileage,
-    transmission,
-    whatsApp,
-    price,
-    payMethod,
-    vehicleInfo,
-  } = req.body;
-  const fileext = req.files[0].filename.slice(req.files[0].filename.indexOf('.'));
-  let uploads = req.uniqueSuffix + fileext;
-  console.log(uploads);
-  try {
-    let vehicle = new Vehicle({
+router.post(
+  "/upload",
+  setCustomSuffix,
+  upload.array("files"),
+  async (req, res) => {
+    const {
       id,
       brand,
       year,
@@ -59,20 +54,49 @@ router.post("/upload", setCustomSuffix, upload.array("files"), async (req, res) 
       price,
       payMethod,
       vehicleInfo,
-      uploads,
-    });
+    } = req.body;
+    const fileext = req.files[0].filename.slice(
+      req.files[0].filename.indexOf(".")
+    );
+    let uploads = req.uniqueSuffix + fileext;
+    console.log(uploads);
+    try {
+      let vehicle = new Vehicle({
+        id,
+        brand,
+        year,
+        version,
+        mileage,
+        transmission,
+        whatsApp,
+        price,
+        payMethod,
+        vehicleInfo,
+        uploads,
+      });
 
-    await vehicle.save();
-    res.json(vehicle);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
+      await vehicle.save();
+      res.json(vehicle);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
   }
-});
+);
 
 router.post("/open", async (req, res) => {
+  console.log(req.body);
   try {
-    const last12Documents = await Vehicle.find().sort({_id: -1}).limit(req.body.num);
+    const last12Documents = await Vehicle.find({
+      $or: [
+        { brand: { $regex: req.body.search, $options: "i" } },
+        { price: { $regex: req.body.search, $options: "i" } },
+        { version: { $regex: req.body.search, $options: "i" } },
+        { payMethod: { $regex: req.body.search, $options: "i" } },
+      ],
+    })
+      .sort({ _id: -1 })
+      .limit(req.body.num);
     res.status(200).send(last12Documents);
   } catch (err) {
     console.error(err.message);
@@ -87,11 +111,13 @@ router.post("/groupOpen", async (req, res) => {
   console.log("str.slice(-17, -4)", str.slice(-17, -4));
   fs.readdir("public/uploads", (err, files) => {
     if (err) {
-        console.error(err);
-        res.status(500).send('Error reading images directory');
+      console.error(err);
+      res.status(500).send("Error reading images directory");
     } else {
-        const imageNames = files.filter(file => file.includes(str.slice(-17, -4))); // Filtrar solo archivos con extensión .jpg
-        res.status(200).send(imageNames);
+      const imageNames = files.filter((file) =>
+        file.includes(str.slice(-17, -4))
+      ); // Filtrar solo archivos con extensión .jpg
+      res.status(200).send(imageNames);
     }
   });
 });
