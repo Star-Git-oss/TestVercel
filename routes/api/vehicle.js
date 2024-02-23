@@ -87,17 +87,37 @@ router.post(
 router.post("/open", async (req, res) => {
   console.log(req.body);
   try {
-    const last12Documents = await Vehicle.find({
+    // const last12Documents = await Vehicle.find({
+    //   $or: [
+    //     { brand: { $regex: req.body.search, $options: "i" } },
+    //     { price: { $regex: req.body.search, $options: "i" } },
+    //     { version: { $regex: req.body.search, $options: "i" } },
+    //     { payMethod: { $regex: req.body.search, $options: "i" } },
+    //   ],
+    // })
+    //   .sort({ _id: -1 })
+    //   .limit(req.body.num);
+    let total = 0,
+      count = 0;
+
+    const totalDocuments = await Vehicle.find();
+    total = totalDocuments.length;
+    console.log(total);
+
+    const searchResult = await Vehicle.find({
       $or: [
         { brand: { $regex: req.body.search, $options: "i" } },
         { price: { $regex: req.body.search, $options: "i" } },
         { version: { $regex: req.body.search, $options: "i" } },
         { payMethod: { $regex: req.body.search, $options: "i" } },
       ],
-    })
-      .sort({ _id: -1 })
-      .limit(req.body.num);
-    res.status(200).send({data:last12Documents, result: {total: 100, count: 2}});
+    }).sort({ _id: -1 });
+    count = searchResult.length;
+    console.log(count);
+
+    res
+      .status(200)
+      .send({ data: searchResult, result: { total: total, count: count } });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
