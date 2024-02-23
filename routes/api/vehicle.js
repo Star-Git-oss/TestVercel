@@ -97,7 +97,7 @@ router.post("/open", async (req, res) => {
     })
       .sort({ _id: -1 })
       .limit(req.body.num);
-    res.status(200).send(last12Documents);
+    res.status(200).send({data:last12Documents, result: {total: 100, count: 2}});
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
