@@ -22,4 +22,21 @@ const PORT = process.env.PORT || 5005;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-module.exports = app;
+
+
+// const qrcode = require('qrcode-terminal');
+
+// const { Client } = require('whatsapp-web.js');
+// const client = new Client();
+
+// client.on('qr', (qr) => {
+//     qrcode.generate(qr, { small: true });
+// });
+
+// client.on('ready', () => {
+//     console.log('Client is ready!');
+// });
+
+// client.initialize();
+ 
+module.exports = app;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
