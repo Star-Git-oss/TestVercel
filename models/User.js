@@ -23,6 +23,10 @@ const UserSchema = new Schema(
     password: {
       type: String
     },
+    subscriptionId: {
+      type: String,
+      default: false,
+    },
   },
   { timestamps: true }
 );
