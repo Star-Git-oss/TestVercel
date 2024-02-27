@@ -1,4 +1,7 @@
 {
   "mongoURI": "mongodb+srv://yakiv390497:N4gkZwUKD2GahJVA@cluster0.mem6wir.mongodb.net/",
-  "jwtSecret": "secret"
+  "jwtSecret": "secret",
+  "public_key": "",
+  "secret_key": "",
+  "webhook_key": "whsec_16wuRIdBO970PpcEcgL4FPthYpWMG3ks"
 }

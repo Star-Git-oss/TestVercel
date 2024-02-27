@@ -4,7 +4,7 @@ const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const moment = require('moment');
+const moment = require("moment");
 const axios = require("axios");
 
 router.post("/signup", async (req, res) => {
@@ -52,7 +52,7 @@ router.post("/signin", async (req, res) => {
 
         // const currentTime = new Date();
         // console.log(currentTime - user.createdAt);
-        const createdAt = user.createdAt // Example createdAt time
+        const createdAt = user.createdAt; // Example createdAt time
         const sixMonthsAgo = moment().subtract(6, "months");
 
         const isAtLeastSixMonthsDifference =
@@ -119,6 +119,18 @@ router.post("/googleSignin", async (req, res) => {
       role: user.role,
     };
 
+    // const currentTime = new Date();
+    // console.log(currentTime - user.createdAt);
+    const createdAt = user.createdAt; // Example createdAt time
+    const sixMonthsAgo = moment().subtract(6, "months");
+
+    const isAtLeastSixMonthsDifference =
+      moment().diff(createdAt, "months") >= 6;
+
+    console.log(
+      `Is the difference at least 6 months? ${isAtLeastSixMonthsDifference}`
+    );
+
     // Create jwt token and return it
     jwt.sign(
       payload,
@@ -133,6 +145,7 @@ router.post("/googleSignin", async (req, res) => {
           username: user.username,
           whatsApp: user.whatsApp,
           tel: user.tel,
+          freetime: !isAtLeastSixMonthsDifference,
         });
       }
     );

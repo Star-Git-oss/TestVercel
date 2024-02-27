@@ -18,8 +18,8 @@ connectDB();
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));    
 // Define Routes
-app.use("/api/user", require("./routes/api/users"));
-app.use("/api/vehicle", require("./routes/api/vehicle"));
+app.use("/api/user", express.json(), require("./routes/api/users"));
+app.use("/api/vehicle", express.json(), require("./routes/api/vehicle"));
 app.use("/api/stripe", require("./routes/api/stripe"));
 
 app.use("/", express.static(path.join(__dirname, "public")));

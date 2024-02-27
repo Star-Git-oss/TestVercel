@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const User = require("../../models/User");
 
 const stripe = require("stripe")(
-  "sk_test_51OnG87Dg9vv5uXuM778Q7eeL9mCdTgLBDUWIX673o42jAPgaCVHxtWUWYYW73QVPX5XRMMEC3dI9M2q1ZkkK12Sr00cLw9PNgZ"
+  // "sk_test_51OnG87Dg9vv5uXuM778Q7eeL9mCdTgLBDUWIX673o42jAPgaCVHxtWUWYYW73QVPX5XRMMEC3dI9M2q1ZkkK12Sr00cLw9PNgZ" //test
+  "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"
 );
 
 router.post("/create-customer", express.json(), async (req, res) => {
@@ -104,6 +105,28 @@ router.post("/create-subscription",  express.json(), async (req, res) => {
   }
 });
 
+router.post("/check-subscription", express.json(), async (req, res) => {
+  const email = req.body.email;
+  const { subscriptionId } = await User.findOne(
+    { email: email },
+    { subscriptionId: 1, _id: 0 }
+  );
+  console.log(subscriptionId);
+
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+    // Access the subscription status from the retrieved subscription object
+    const subscriptionStatus = subscription.status;
+    console.log(subscriptionStatus);
+
+    res.json({ status: subscriptionStatus });
+  } catch (error) {
+    // console.error("Error checking subscription status:", error);
+    res.status(200).json({ error: "Failed to check subscription status" });
+  }
+});
+
 router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
@@ -156,26 +179,5 @@ router.post(
     response.send("OK");
   }
 );
-
-router.post("/check-subscription", async (req, res) => {
-  const email = req.body.email;
-  const { subscriptionId } = await User.findOne(
-    { email: email },
-    { subscriptionId: 1, _id: 0 }
-  );
-
-  try {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-
-    // Access the subscription status from the retrieved subscription object
-    const subscriptionStatus = subscription.status;
-    console.log(subscriptionStatus);
-
-    res.json({ status: subscriptionStatus });
-  } catch (error) {
-    console.error("Error checking subscription status:", error);
-    res.status(500).json({ error: "Failed to check subscription status" });
-  }
-});
 
 module.exports = router;
