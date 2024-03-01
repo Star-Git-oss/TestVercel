@@ -20,6 +20,7 @@ connectDB();
 // Define Routes
 app.use("/api/user", express.json(), require("./routes/api/users"));
 app.use("/api/vehicle", express.json(), require("./routes/api/vehicle"));
+app.use("/api/logo", express.json(), require("./routes/api/logo"));
 app.use("/api/stripe", require("./routes/api/stripe"));
 
 app.use("/", express.static(path.join(__dirname, "public")));

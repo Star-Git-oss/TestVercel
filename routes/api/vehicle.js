@@ -126,6 +126,14 @@ router.post("/open", async (req, res) => {
 
 router.post("/groupOpen", async (req, res) => {
   let str = req.body.str;
+  console.log(req.body.str);
+  let vehicle = {};
+  try {
+    vehicle = await Vehicle.find({ uploads: str.slice(-17) });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Not found data");
+  }
   let newSrc = [];
   newSrc.push(str);
   console.log("str.slice(-17, -4)", str.slice(-17, -4));
@@ -137,7 +145,7 @@ router.post("/groupOpen", async (req, res) => {
       const imageNames = files.filter((file) =>
         file.includes(str.slice(-17, -4))
       ); // Filtrar solo archivos con extensión .jpg
-      res.status(200).send(imageNames);
+      res.status(200).send({vehicle, imageNames});
     }
   });
 });
