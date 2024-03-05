@@ -107,7 +107,6 @@ router.post("/open", async (req, res) => {
     const searchResult = await Vehicle.find({
       $or: [
         { brand: { $regex: req.body.search, $options: "i" } },
-        { price: { $regex: req.body.search, $options: "i" } },
         { version: { $regex: req.body.search, $options: "i" } },
         { payMethod: { $regex: req.body.search, $options: "i" } },
       ],
@@ -145,9 +144,31 @@ router.post("/groupOpen", async (req, res) => {
       const imageNames = files.filter((file) =>
         file.includes(str.slice(-17, -4))
       ); // Filtrar solo archivos con extensión .jpg
-      res.status(200).send({vehicle, imageNames});
+      res.status(200).send({ vehicle, imageNames });
     }
   });
+});
+
+router.post("/openLanding", async (req, res) => {
+  const { brand, auto, yearMin, yearMax, priceMin, priceMax } = req.body;
+  try {
+    const searchResult = await Vehicle.find({
+      $and: [
+        { brand: { $regex: brand, $options: "i" } }, // Case-insensitive regex match for brand field
+        {
+          $and: [
+            { year: { $gt: yearMin, $lt: yearMax } },
+            { price: { $gt: priceMin, $lt: priceMax } }
+          ]
+        }
+      ]
+    });
+    console.log(searchResult);
+    res.status(200).send({ data: searchResult });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
 });
 
 module.exports = router;

@@ -11,7 +11,7 @@ const UserSchema = new Schema(
       type: String,
     },
     year: {
-      type: String,
+      type: Number,
     },
     version: {
       type: String,
@@ -26,7 +26,7 @@ const UserSchema = new Schema(
       type: String,
     },
     price: {
-      type: String,
+      type: Number,
     },
     payMethod: {
       type: String,
