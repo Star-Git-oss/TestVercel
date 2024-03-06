@@ -23,7 +23,7 @@ app.use("/api/vehicle", express.json(), require("./routes/api/vehicle"));
 app.use("/api/logo", express.json(), require("./routes/api/logo"));
 app.use("/api/stripe", require("./routes/api/stripe"));
 
-app.use("/api/", express.static(path.join(__dirname, "public")));
+app.use("/api", express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 5000;
 
